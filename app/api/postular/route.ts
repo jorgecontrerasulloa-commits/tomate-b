@@ -13,15 +13,16 @@ export async function POST(request: Request) {
       );
     }
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://zglwwmagplxcdoorriap.supabase.co";
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const DEFAULT_SUPABASE_URL = "https://zglwwmagplxcdoorriap.supabase.co";
+    const DEFAULT_SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnbHd3bWFncGx4Y2Rvb3JyaWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwMTM2NjksImV4cCI6MjEwNTU4OTY2OX0.sZ1QylEgJrKmuu_cSX6_QQdrCKPtqp8Dj2YaNbst5c4";
 
-    if (!supabaseKey || supabaseKey === "tu_anon_key_aqui") {
-      return NextResponse.json(
-        { error: "Falta configurar la clave NEXT_PUBLIC_SUPABASE_ANON_KEY en .env.local" },
-        { status: 500 }
-      );
-    }
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+    const supabaseKey =
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY !== "tu_anon_key_aqui"
+        ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+        : DEFAULT_SUPABASE_ANON_KEY;
 
     // Insertar en la tabla public.postulaciones vía REST API de Supabase
     const response = await fetch(`${supabaseUrl}/rest/v1/postulaciones`, {
