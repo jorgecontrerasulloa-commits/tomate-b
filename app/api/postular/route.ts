@@ -47,7 +47,7 @@ export async function POST(request: Request) {
       const errorText = await response.text();
       console.error("Error al insertar postulación en Supabase:", errorText);
       return NextResponse.json(
-        { error: "No se pudo registrar la postulación. Verifica la tabla en Supabase." },
+        { error: `No se pudo registrar la postulación: ${errorText}` },
         { status: response.status }
       );
     }
